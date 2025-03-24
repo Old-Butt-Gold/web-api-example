@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiExample", "WebApiExample\WebApiExample.csproj", "{CDDE8F1B-B674-4BED-B27C-A6228FCB6DE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{BE68924A-6289-4469-8611-7AE4BF467CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{C3C69A5A-3B10-46C1-8B9D-D78B6A42CE5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{CDDE8F1B-B674-4BED-B27C-A6228FCB6DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDDE8F1B-B674-4BED-B27C-A6228FCB6DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDDE8F1B-B674-4BED-B27C-A6228FCB6DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE68924A-6289-4469-8611-7AE4BF467CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE68924A-6289-4469-8611-7AE4BF467CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE68924A-6289-4469-8611-7AE4BF467CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE68924A-6289-4469-8611-7AE4BF467CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3C69A5A-3B10-46C1-8B9D-D78B6A42CE5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3C69A5A-3B10-46C1-8B9D-D78B6A42CE5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3C69A5A-3B10-46C1-8B9D-D78B6A42CE5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3C69A5A-3B10-46C1-8B9D-D78B6A42CE5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
