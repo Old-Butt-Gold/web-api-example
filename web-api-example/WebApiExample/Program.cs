@@ -1,4 +1,3 @@
-using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using WebApiExample.Extensions;
 
@@ -9,14 +8,6 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
-
-app.Map("/", (ILoggerManager _logger) =>
-{
-    _logger.LogInfo("Here is info message from our values controller.");
-    _logger.LogDebug("Here is debug message from our values controller.");
-    _logger.LogWarn("Here is warn message from our values controller.");
-    _logger.LogError("Here is an error message from our values controller.");
-});
 
 if (app.Environment.IsDevelopment())
 {
