@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using WebApiExample;
@@ -6,6 +8,13 @@ using WebApiExample.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        //Не записывает null
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    })
     .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 // Without this code, our API wouldn’t work, and wouldn’t know where to route incoming requests.
 
