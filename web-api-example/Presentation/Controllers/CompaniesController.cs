@@ -36,10 +36,26 @@ public class CompaniesController : ControllerBase
         
         var createdCompany = _service.CompanyService.CreateCompany(company);
         
+        // Аналог: CreatedAtAction(nameof(GetCompany), new { id = createdCompany.Id }, createdCompany);
         return CreatedAtRoute("CompanyById", new { id = createdCompany.Id },
             createdCompany);
     }
+    
+    [HttpGet("collection/({ids})", Name = "CompanyCollection")]
+    public IActionResult GetCompanyCollection(IEnumerable<Guid> ids)
+    {
+        var companies = _service.CompanyService.GetByIds(ids, false);
+        
+        return Ok(companies);
+    }
+    
+    [HttpPost("collection")]
+    public IActionResult CreateCompanyCollection([FromBody] IEnumerable<CompanyForCreationDto> companyCollection)
+    {
+        var result = _service.CompanyService.CreateCompanyCollection(companyCollection);
+        
+        return CreatedAtRoute("CompanyCollection", new { result.ids }, result.companies);
+    }
 
-
-
+    
 }
