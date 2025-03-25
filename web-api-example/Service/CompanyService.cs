@@ -98,4 +98,17 @@ internal sealed class CompanyService : ICompanyService
         _repository.Save();
 
     }
+
+    public void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges)
+    {
+        // The same track is here
+        var companyEntity = _repository.Company.GetCompany(companyId, trackChanges);
+        
+        if (companyEntity is null)
+            throw new CompanyNotFoundException(companyId);
+        
+        // We map companyForUpdate in companyEntity, and after Put we also can Create new Employee
+        _mapper.Map(companyForUpdate, companyEntity);
+        _repository.Save();
+    }
 }
