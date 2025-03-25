@@ -22,4 +22,6 @@ public class CompanyRepository : RepositoryBase<Company, Guid>, ICompanyReposito
         return FindByCondition(c => c.Id.Equals(companyId), trackChanges)
             .SingleOrDefault();
     }
+
+    public void CreateCompany(Company company) => Create(company);
 }

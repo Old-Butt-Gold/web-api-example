@@ -14,6 +14,8 @@ public class MappingProfile : Profile
                     string.Concat(company.Address, " ", company.Country)));
         
         CreateMap<Employee, EmployeeDto>();
+        
+        CreateMap<CompanyForCreationDto, Company>();
     }
 
 }
