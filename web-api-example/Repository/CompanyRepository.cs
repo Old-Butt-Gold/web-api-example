@@ -9,4 +9,11 @@ public class CompanyRepository : RepositoryBase<Company, Guid>, ICompanyReposito
         : base(repositoryContext)
     {
     }
+
+    public IEnumerable<Company> GetAllCompanies(bool trackChanges)
+    {
+        return FindAll(trackChanges)
+            .OrderBy(c => c.Name)
+            .ToList();
+    }
 }
