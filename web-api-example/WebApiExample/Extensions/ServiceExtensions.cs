@@ -40,7 +40,8 @@ public static class ServiceExtensions
         IConfiguration configuration)
     {
         services.AddDbContext<RepositoryContext>(opts =>
-            opts.UseNpgsql(configuration.GetConnectionString("PostgresConnection"))
+            opts.UseNpgsql(configuration.GetConnectionString("PostgresConnection"),
+                    b => b.MigrationsAssembly("WebApiExample"))
                 .LogTo(Console.WriteLine, LogLevel.Information, 
                     DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.LocalTime));
     }
