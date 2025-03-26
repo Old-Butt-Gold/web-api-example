@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Repository;
 using Service;
 using Service.Contracts;
+using Service.DataShaping;
+using Shared.DataTransferObjects;
 
 namespace WebApiExample.Extensions;
 
@@ -45,5 +47,10 @@ public static class ServiceExtensions
                     b => b.MigrationsAssembly("WebApiExample"))
                 .LogTo(Console.WriteLine, LogLevel.Information, 
                     DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.LocalTime));
+    }
+
+    public static void ConfigureDataShaper(this IServiceCollection services)
+    {
+        services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
     }
 }
