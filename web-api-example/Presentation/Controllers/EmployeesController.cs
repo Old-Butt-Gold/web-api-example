@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -32,14 +33,9 @@ public class EmployeesController : ControllerBase
     }
     
     [HttpPost]
+    [ValidationFilter]
     public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto? employee)
     {
-        if (employee is null)
-            return BadRequest("EmployeeForCreationDto object is null");
-        
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-        
         var employeeToReturn = await
             _service.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employee, false);
         
@@ -57,15 +53,10 @@ public class EmployeesController : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
+    [ValidationFilter]
     public async Task<IActionResult> UpdateEmployeeForCompany(Guid companyId, Guid id,
         [FromBody] EmployeeForUpdateDto? employee)
     {
-        if (employee is null)
-            return BadRequest("EmployeeForUpdateDto object is null");
-        
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-        
         await _service.EmployeeService.
             UpdateEmployeeForCompanyAsync(companyId, id, employee, false, true);
         return NoContent();
