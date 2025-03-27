@@ -17,6 +17,7 @@ builder.Services.AddControllers(config =>
     {
         config.RespectBrowserAcceptHeader = true;
         config.ReturnHttpNotAcceptable = true;
+        config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
     }).AddXmlDataContractSerializerFormatters()
     .AddJsonOptions(options =>
     {
@@ -28,9 +29,6 @@ builder.Services.AddControllers(config =>
     .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 // Without this code, our API wouldn’t work, and wouldn’t know where to route incoming requests.
 
-builder.Services.AddApiVersioning()
-    .AddMvc();
-
 builder.Services.ConfigureCors();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
@@ -41,6 +39,7 @@ builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
 builder.Services.ConfigureLinksForHateoas();
 builder.Services.ConfigureVersioning();
+builder.Services.ConfigureResponseCaching();
 
 var app = builder.Build();
 
@@ -62,6 +61,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions()
 });
 
 app.UseCors("CorsPolicy");
+
+// should go after CORS!
+app.UseResponseCaching();
 
 app.UseAuthorization();
 

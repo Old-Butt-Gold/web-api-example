@@ -12,6 +12,10 @@ namespace Presentation.Controllers;
 //[Route("api/{v:apiVersion}/companies")]
 [Route("api/companies")]
 [ApiController]
+// this cache rule will apply to all the actions inside
+// the controller except the ones that already have the ResponseCache
+// attribute applied.
+[ResponseCache(CacheProfileName = "120SecondsDuration")]
 public class CompaniesController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -29,6 +33,7 @@ public class CompaniesController : ControllerBase
     }
     
     [HttpGet("{id:guid}", Name = "CompanyById")]
+    [ResponseCache(Duration = 60)]
     public async Task<IActionResult> GetCompany(Guid id)
     {
         var company = await _service.CompanyService.GetCompanyAsync(id, false);
