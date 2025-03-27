@@ -72,5 +72,15 @@ public class CompaniesController : ControllerBase
         
         return NoContent();
     }
+    
+    [HttpOptions]
+    public IActionResult GetCompaniesOptions()
+    {
+        //Content-Length also should be set to zero, but ASP.NET Core takes care of that
+        
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+
+        return Ok();
+    }
 
 }

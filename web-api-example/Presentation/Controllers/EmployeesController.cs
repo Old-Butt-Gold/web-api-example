@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Entities.LinkModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Service.Contracts;
@@ -20,6 +21,7 @@ public class EmployeesController : ControllerBase
     }
     
     [HttpGet]
+    [HttpHead]
     [ValidateMediaType]
     public async Task<IActionResult> GetEmployeesForCompany(Guid companyId,
         [FromQuery] EmployeeParameters employeeParameters)
@@ -31,6 +33,11 @@ public class EmployeesController : ControllerBase
         
         Response.Headers.Add("X-Pagination",
             JsonSerializer.Serialize(result.metaData));
+        
+        if (HttpContext.Request.Method == HttpMethods.Head)
+        {
+            return Ok(); // Возвращаем только статус 200 без тела
+        }
         
         return result.linkResponse.HasLinks ? Ok(result.linkResponse.LinkedEntities) :
             Ok(result.linkResponse.ShapedEntities);
