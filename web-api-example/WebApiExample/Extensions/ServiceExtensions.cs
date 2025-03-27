@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using Asp.Versioning;
+using Contracts;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -81,6 +82,19 @@ public static class ServiceExtensions
     public static void ConfigureLinksForHateoas(this IServiceCollection services)
     {
         services.AddScoped<IEmployeeLinks, EmployeeLinks>();
+    }
+    
+    public static void ConfigureVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(opt =>
+        {
+            //adds the API version to the response header.
+            opt.ReportApiVersions = true;
+            opt.AssumeDefaultVersionWhenUnspecified = true;
+            opt.DefaultApiVersion = new ApiVersion(1, 0);
+            // Need to send header "api-version=2.0"
+            opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+        });
     }
 
 }
