@@ -16,7 +16,7 @@ public class CompaniesController : ControllerBase
         _service = service;
     }
     
-    [HttpGet]
+    [HttpGet(Name = "GetCompanies")]
     public async Task<IActionResult> GetCompanies()
     {
         var companies = await
@@ -32,7 +32,7 @@ public class CompaniesController : ControllerBase
         return Ok(company);
     }
     
-    [HttpPost]
+    [HttpPost(Name = "CreateCompany")]
     [ValidationFilter]
     public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto? company)
     {
