@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Contracts;
 using LoggerService;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +69,7 @@ public static class ServiceExtensions
                 .Add("application/vnd.codemaze.hateoas+json");
             systemTextJsonOutputFormatter?.SupportedMediaTypes
                 .Add("application/vnd.codemaze.apiroot+json");
-            
+
             var xmlOutputFormatter = config.OutputFormatters
                 .OfType<XmlDataContractSerializerOutputFormatter>()?
                 .FirstOrDefault();
@@ -83,7 +84,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IEmployeeLinks, EmployeeLinks>();
     }
-    
+
     public static void ConfigureVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(opt =>
@@ -96,9 +97,20 @@ public static class ServiceExtensions
             opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
         }).AddMvc();
     }
-    
+
     public static void ConfigureResponseCaching(this IServiceCollection services)
     {
         services.AddResponseCaching();
+    }
+
+    public static void ConfigureHttpCacheHeaders(this IServiceCollection services)
+    {
+        services.AddHttpCacheHeaders(
+            expirationOpt =>
+            {
+                expirationOpt.MaxAge = 65;
+                expirationOpt.CacheLocation = CacheLocation.Private;
+            },
+            validationOpt => { validationOpt.MustRevalidate = true; });
     }
 }

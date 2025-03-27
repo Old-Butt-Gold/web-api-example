@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Presentation.ModelBinders;
@@ -15,7 +16,8 @@ namespace Presentation.Controllers;
 // this cache rule will apply to all the actions inside
 // the controller except the ones that already have the ResponseCache
 // attribute applied.
-[ResponseCache(CacheProfileName = "120SecondsDuration")]
+//[ResponseCache(CacheProfileName = "120SecondsDuration")]
+// P.S it's commented because of Marvin.Cache.Headers.Library
 public class CompaniesController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -33,7 +35,10 @@ public class CompaniesController : ControllerBase
     }
     
     [HttpGet("{id:guid}", Name = "CompanyById")]
-    [ResponseCache(Duration = 60)]
+    //[ResponseCache(Duration = 60)]
+    [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
+    [HttpCacheValidation(MustRevalidate = false)]
+    // will override the global configuration in extensions
     public async Task<IActionResult> GetCompany(Guid id)
     {
         var company = await _service.CompanyService.GetCompanyAsync(id, false);

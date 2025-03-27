@@ -40,6 +40,7 @@ builder.Services.AddCustomMediaTypes();
 builder.Services.ConfigureLinksForHateoas();
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
+builder.Services.ConfigureHttpCacheHeaders();
 
 var app = builder.Build();
 
@@ -63,7 +64,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions()
 app.UseCors("CorsPolicy");
 
 // should go after CORS!
-app.UseResponseCaching();
+app.UseResponseCaching(); //is not that good for validation — it is much better for just expiration
+app.UseHttpCacheHeaders();
 
 app.UseAuthorization();
 
