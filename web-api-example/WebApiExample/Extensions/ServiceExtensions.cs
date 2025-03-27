@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using AspNetCoreRateLimit;
 using Contracts;
 using LoggerService;
 using Marvin.Cache.Headers;
@@ -112,5 +113,25 @@ public static class ServiceExtensions
                 expirationOpt.CacheLocation = CacheLocation.Private;
             },
             validationOpt => { validationOpt.MustRevalidate = true; });
+    }
+    
+    public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+    {
+        var rateLimitRules = new List<RateLimitRule>
+        {
+            new()
+            {
+                Endpoint = "*",
+                Limit = 5,
+                Period = "1m",
+                PeriodTimespan = TimeSpan.FromMinutes(1),
+            }
+        };
+        services.Configure<IpRateLimitOptions>(opt => { opt.GeneralRules = rateLimitRules; });
+        
+        services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+        services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
     }
 }
