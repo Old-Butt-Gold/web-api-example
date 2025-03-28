@@ -124,7 +124,7 @@ public static class ServiceExtensions
             new()
             {
                 Endpoint = "*",
-                Limit = 5,
+                Limit = 30,
                 Period = "1m",
                 PeriodTimespan = TimeSpan.FromMinutes(1),
             }
