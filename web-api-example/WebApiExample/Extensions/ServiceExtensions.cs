@@ -159,9 +159,7 @@ public static class ServiceExtensions
         configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        
         var secretKey = Environment.GetEnvironmentVariable("SECRET");
-        
         services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -173,9 +171,9 @@ public static class ServiceExtensions
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
+                    ClockSkew = TimeSpan.Zero,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
                     ValidIssuer = jwtSettings["validIssuer"],
                     ValidAudience = jwtSettings["validAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
