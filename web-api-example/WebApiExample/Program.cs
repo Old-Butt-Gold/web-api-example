@@ -1,9 +1,12 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Asp.Versioning.ApiExplorer;
 using AspNetCoreRateLimit;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Scalar.AspNetCore;
 using WebApiExample;
 using WebApiExample.Extensions;
 
@@ -50,6 +53,33 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
+builder.Services.AddEndpointsApiExplorer();
+
+string[] versions = ["v1", "v2"];
+
+foreach (var version in versions)
+{
+    builder.Services.AddOpenApi(version, options =>
+    {
+        // Add the appropriate API version information to the document
+        options.AddDocumentTransformer((document, context, _) =>
+        {
+            var descriptionProvider = context.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+            var versionDescription = descriptionProvider.ApiVersionDescriptions.FirstOrDefault(x => x.GroupName == version);
+            document.Info.Version = versionDescription?.ApiVersion.ToString();
+            return Task.CompletedTask;
+        });
+
+        // Indicate if the API is deprecated
+        options.AddOperationTransformer((operation, context, _) =>
+        {
+            var apiDescription = context.Description;
+            operation.Deprecated = apiDescription.IsDeprecated();
+            return Task.CompletedTask;
+        });
+    });
+}
+
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerManager>();
@@ -79,6 +109,21 @@ app.UseHttpCacheHeaders();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        // Use [ProducesResponseType((201))] in controllers
+        options.AddDocuments(versions);
+        
+        options.WithTheme(ScalarTheme.DeepSpace)
+            .WithLayout(ScalarLayout.Modern)
+            .WithSearchHotKey("f")
+            .WithTitle("CodeMase API");
+    });
+}
 
 app.MapControllers();
 

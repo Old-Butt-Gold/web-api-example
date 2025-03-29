@@ -102,7 +102,11 @@ public static class ServiceExtensions
             opt.DefaultApiVersion = new ApiVersion(1, 0);
             // Need to send header "api-version=2.0"
             opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
-        }).AddMvc();
+        })
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+        });
     }
 
     public static void ConfigureResponseCaching(this IServiceCollection services)

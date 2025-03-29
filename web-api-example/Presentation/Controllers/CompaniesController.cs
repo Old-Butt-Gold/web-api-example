@@ -19,6 +19,7 @@ namespace Presentation.Controllers;
 // attribute applied.
 //[ResponseCache(CacheProfileName = "120SecondsDuration")]
 // P.S it's commented because of Marvin.Cache.Headers.Library
+[ApiExplorerSettings(GroupName = "v1")]
 public class CompaniesController : ControllerBase
 {
     private readonly IServiceManager _service;
