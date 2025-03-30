@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using Contracts;
 using Entities.ErrorModel;
 using Entities.Exceptions;
@@ -23,16 +24,26 @@ public static class ExceptionMiddlewareExtensions
                     {
                         NotFoundException => StatusCodes.Status404NotFound,
                         BadRequestException => StatusCodes.Status400BadRequest,
+                        ValidationAppException => StatusCodes.Status422UnprocessableEntity,
                         _ => StatusCodes.Status500InternalServerError
                     };
                     
                     logger.LogError($"Something went wrong: {contextFeature.Error}");
                     
-                    await context.Response.WriteAsync(new ErrorDetails()
+                    if (contextFeature.Error is ValidationAppException exception)
                     {
-                        StatusCode = context.Response.StatusCode,
-                        Message = contextFeature.Error.Message,
-                    }.ToString());
+                        await context.Response
+                            .WriteAsync(JsonSerializer.Serialize(new { exception.Errors
+                            }));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync(new ErrorDetails()
+                        {
+                            StatusCode = context.Response.StatusCode,
+                            Message = contextFeature.Error.Message,
+                        }.ToString());
+                    }
                 }
             });
         });
