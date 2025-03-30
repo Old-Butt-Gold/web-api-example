@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Application;
 using Asp.Versioning.ApiExplorer;
 using AspNetCoreRateLimit;
 using Contracts;
@@ -79,6 +80,11 @@ foreach (var version in versions)
         });
     });
 }
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
+});
 
 var app = builder.Build();
 
