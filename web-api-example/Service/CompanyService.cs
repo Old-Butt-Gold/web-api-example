@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
+using Entities.Responses;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -28,6 +29,13 @@ internal sealed class CompanyService : ICompanyService
         var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
         
         return companiesDto;
+    }
+
+    public async Task<ApiBaseResponse> GetAllCompaniesAsyncFlow(bool trackChanges)
+    {
+        var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges);
+        var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
+        return new ApiOkResponse<IEnumerable<CompanyDto>>(companiesDto);
     }
 
     public async Task<CompanyDto> GetCompanyAsync(Guid id, bool trackChanges)

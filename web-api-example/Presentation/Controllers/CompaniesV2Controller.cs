@@ -1,6 +1,9 @@
 ﻿using Asp.Versioning;
+using Entities.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 
 namespace Presentation.Controllers;
 
@@ -11,7 +14,7 @@ namespace Presentation.Controllers;
 [Route("api/companies")]
 [ApiController]
 [ApiExplorerSettings(GroupName = "v2")]
-public class CompaniesV2Controller : ControllerBase
+public class CompaniesV2Controller : ApiControllerBase
 {
     private readonly IServiceManager _service;
     
@@ -28,5 +31,15 @@ public class CompaniesV2Controller : ControllerBase
         
         var companiesV2 = companies.Select(x => $"{x.Name} V2");
         return Ok(companiesV2);
+    }
+    
+    [HttpGet("/flow")]
+    public async Task<IActionResult> GetCompaniesFlow()
+    {
+        var baseResult = await _service.CompanyService.GetAllCompaniesAsyncFlow(false);
+
+        var companies = baseResult.GetResult<IEnumerable<CompanyDto>>();
+
+        return Ok(companies);
     }
 }
