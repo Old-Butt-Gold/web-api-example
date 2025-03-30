@@ -40,8 +40,10 @@ public class CompaniesControllerCQRS : ControllerBase
     public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto?
         companyForCreationDto)
     {
-        if (companyForCreationDto is null)
-            return BadRequest("CompanyForCreationDto object is null");
+        // recommendation to use BadRequest (400) if object is null
+        // and use 422 code if there are validation errors
+        /*if (companyForCreationDto is null)
+            return BadRequest("CompanyForCreationDto object is null");*/
         
         var company = await _sender.Send(new CreateCompanyCommand(companyForCreationDto));
         
