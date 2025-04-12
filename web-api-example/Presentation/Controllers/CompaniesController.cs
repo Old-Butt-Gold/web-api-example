@@ -50,7 +50,7 @@ public class CompaniesController : ControllerBase
     }
     
     [HttpPost(Name = "CreateCompany")]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto? company)
     {
         var createdCompany = await _service.CompanyService.CreateCompanyAsync(company);
@@ -82,7 +82,7 @@ public class CompaniesController : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> UpdateCompany(Guid id, [FromBody] CompanyForUpdateDto? company)
     {
         await _service.CompanyService.UpdateCompanyAsync(id, company, true);

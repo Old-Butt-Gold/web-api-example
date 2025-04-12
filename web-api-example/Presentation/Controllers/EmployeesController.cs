@@ -52,7 +52,7 @@ public class EmployeesController : ControllerBase
     }
     
     [HttpPost]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto? employee)
     {
         var employeeToReturn = await
@@ -72,7 +72,7 @@ public class EmployeesController : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> UpdateEmployeeForCompany(Guid companyId, Guid id,
         [FromBody] EmployeeForUpdateDto? employee)
     {

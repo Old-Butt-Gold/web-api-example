@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Presentation.ActionFilters;
 
-public class ValidationFilterAttribute : Attribute, IActionFilter
+public class ValidationActionFilterAttribute : Attribute, IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {

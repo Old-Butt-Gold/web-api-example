@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto
         userForRegistration)
     {
@@ -35,7 +35,7 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("login")]
-    [ValidationFilter]
+    [ServiceFilter(typeof(ValidationActionFilterAttribute))]
     public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
     {
         if (!await _service.AuthenticationService.ValidateUser(user))

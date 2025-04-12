@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using Presentation.ActionFilters;
 using Repository;
 using Service;
 using Service.Contracts;
@@ -85,6 +86,11 @@ public static class ServiceExtensions
             xmlOutputFormatter?.SupportedMediaTypes
                 .Add("application/vnd.codemaze.apiroot+xml");
         });
+    }
+
+    public static void AddFilters(this IServiceCollection services)
+    {
+        services.AddScoped<ValidationActionFilterAttribute>();
     }
 
     public static void ConfigureLinksForHateoas(this IServiceCollection services)

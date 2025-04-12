@@ -45,6 +45,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
+builder.Services.AddFilters();
 builder.Services.ConfigureLinksForHateoas();
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
